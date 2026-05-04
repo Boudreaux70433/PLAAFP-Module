@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See the Whole Student: Writing Powerful PLAAFP Statements</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Trebuchet+MS&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --teal-deep:#02475E;--teal:#028090;--seafoam:#00A896;--mint:#02C39A;--gold:#F0A500;
+    --white:#fff;--light:#f0f8f8;--gray:#5a6a70;--radius:12px;
+  }
+  body{font-family:'Calibri','Segoe UI',Arial,sans-serif;background:var(--light);min-height:100vh;display:flex;flex-direction:column;color:#222;overflow-x:hidden}
+  h1,h2,h3,h4{font-family:'Trebuchet MS','Georgia',serif}
+  /* PROGRESS BAR */
+  #progress-bar-wrap{position:fixed;top:0;left:0;right:0;height:6px;background:#d0e8eb;z-index:1000}
+  #progress-bar{height:100%;background:linear-gradient(90deg,var(--mint),var(--gold));transition:width .4s ease}
+  /* NAV */
+  #top-nav{position:fixed;top:6px;left:0;right:0;background:var(--teal-deep);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  #top-nav .mod-title{color:var(--mint);font-family:'Trebuchet MS',serif;font-size:.85rem;font-weight:700;letter-spacing:.04em}
+  #screen-counter{color:rgba(255,255,255,.6);font-size:.8rem}
+  /* MAIN */
+  #app{margin-top:52px;padding-bottom:80px;min-height:calc(100vh - 52px);display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+  /* SCREENS */
+  .screen{width:100%;max-width:860px;padding:32px 24px;display:none;animation:fadeIn .35s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  /* BOTTOM NAV */
+  #bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--teal-deep);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;z-index:999;box-shadow:0 -2px 8px rgba(0,0,0,.15)}
+  .nav-btn{background:var(--seafoam);color:#fff;border:none;padding:9px 24px;border-radius:24px;font-family:'Trebuchet MS',serif;font-size:.9rem;cursor:pointer;transition:background .2s,transform .1s;font-weight:700}
+  .nav-btn:hover{background:var(--mint);transform:scale(1.03)}
+  .nav-btn:disabled{background:#4a7a80;cursor:not-allowed;transform:none;opacity:.6}
+  .nav-btn.gold{background:var(--gold);color:var(--teal-deep)}
+  .nav-btn.gold:hover{background:#e09500}
+  /* TITLE SCREEN */
+  .title-screen{text-align:center;padding:48px 24px;background:linear-gradient(145deg,var(--teal-deep),var(--teal));border-radius:var(--radius);color:#fff;min-height:460px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+  .title-screen .eyebrow{font-size:.85rem;letter-spacing:.12em;color:var(--mint);text-transform:uppercase;margin-bottom:12px}
+  .title-screen h1{font-size:2.1rem;line-height:1.2;margin-bottom:16px;color:#fff}
+  .title-screen .subtitle{font-size:1.05rem;color:rgba(255,255,255,.8);margin-bottom:32px;max-width:540px}
+  .start-btn{background:var(--gold);color:var(--teal-deep);border:none;padding:14px 40px;border-radius:32px;font-size:1.1rem;font-family:'Trebuchet MS',serif;font-weight:700;cursor:pointer;transition:transform .15s,background .2s;box-shadow:0 4px 16px rgba(240,165,0,.4)}
+  .start-btn:hover{transform:scale(1.05);background:#e09500}
+  .badge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:5px 16px;font-size:.8rem;color:rgba(255,255,255,.75);margin-bottom:20px}
+  /* SECTION INTRO */
+  .section-intro{background:linear-gradient(135deg,var(--teal),var(--seafoam));border-radius:var(--radius);padding:48px 36px;color:#fff;text-align:center;min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .section-intro .sec-num{font-size:4rem;font-weight:900;opacity:.18;line-height:1;margin-bottom:-8px;font-family:'Trebuchet MS',serif}
+  .section-intro h2{font-size:1.8rem;color:#fff;margin-bottom:14px}
+  .section-intro p{font-size:1.05rem;opacity:.9;max-width:560px}
+  /* CARDS */
+  .card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);border-left:4px solid var(--seafoam);margin-bottom:14px}
+  .card h4{color:var(--teal-deep);margin-bottom:6px}
+  .card p{color:var(--gray);font-size:.95rem;line-height:1.5}
+  /* STAT CALLOUTS */
+  .stat-row{display:flex;gap:16px;flex-wrap:wrap;margin:24px 0}
+  .stat-box{flex:1;min-width:160px;background:var(--teal-deep);border-radius:var(--radius);padding:20px;text-align:center;color:#fff}
+  .stat-box .num{font-size:2.2rem;font-weight:900;color:var(--mint);font-family:'Trebuchet MS',serif;line-height:1}
+  .stat-box .lbl{font-size:.85rem;opacity:.85;margin-top:6px}
+  /* FLIP CARDS */
+  .flip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0}
+  .flip-card{height:200px;cursor:pointer;perspective:1000px}
+  .flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .flip-front{background:var(--teal-deep);color:#fff}
+  .flip-front .icon{font-size:2rem;margin-bottom:8px}
+  .flip-front h4{color:#fff;font-size:1rem}
+  .flip-back{background:var(--seafoam);color:#fff;transform:rotateY(180deg);font-size:.88rem;line-height:1.5}
+  .flip-back strong{display:block;margin-bottom:6px;font-size:.95rem}
+  .tap-hint{font-size:.78rem;color:var(--gray);text-align:center;margin-top:-8px;margin-bottom:8px;font-style:italic}
+  /* COMPARISON TABLE */
+  .compare-table{width:100%;border-collapse:collapse;margin:20px 0;border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+  .compare-table th{padding:12px 16px;font-size:.9rem;font-family:'Trebuchet MS',serif}
+  .compare-table th:first-child{background:#c0392b;color:#fff}
+  .compare-table th:last-child{background:#27ae60;color:#fff}
+  .compare-table td{padding:12px 16px;font-size:.9rem;vertical-align:top;line-height:1.5}
+  .compare-table tr:nth-child(odd) td{background:#fafafa}
+  .compare-table tr:nth-child(even) td{background:#f2f2f2}
+  /* PITFALL CARDS */
+  .pitfall-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+  .pitfall-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer;border-top:4px solid #e74c3c;transition:box-shadow .2s}
+  .pitfall-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12)}
+  .pitfall-title{font-family:'Trebuchet MS',serif;color:#c0392b;font-size:1rem;margin-bottom:8px}
+  .pitfall-desc{font-size:.88rem;color:var(--gray);line-height:1.5}
+  .pitfall-fix{display:none;margin-top:10px;padding:10px;background:#e8f8f5;border-radius:8px;border-left:3px solid var(--mint);font-size:.87rem;color:var(--teal-deep);line-height:1.5}
+  .pitfall-fix strong{display:block;color:var(--seafoam);margin-bottom:3px}
+  .pitfall-card.revealed .pitfall-fix{display:block}
+  /* QUIZ */
+  .quiz-q{margin-bottom:28px}
+  .quiz-q h4{color:var(--teal-deep);margin-bottom:12px;font-size:1rem;line-height:1.4}
+  .quiz-opt{display:block;background:#fff;border:2px solid #cde;border-radius:8px;padding:10px 16px;margin-bottom:8px;cursor:pointer;font-size:.93rem;transition:border-color .2s,background .2s;text-align:left;width:100%}
+  .quiz-opt:hover{border-color:var(--seafoam);background:#f0fafa}
+  .quiz-opt.correct{border-color:#27ae60;background:#e8f8f0;color:#1a6e3a;font-weight:700}
+  .quiz-opt.wrong{border-color:#e74c3c;background:#fdf0f0;color:#a93226}
+  .quiz-opt:disabled{cursor:not-allowed}
+  .feedback{font-size:.88rem;margin-top:4px;padding:6px 10px;border-radius:6px}
+  .feedback.correct{background:#e8f8f0;color:#1a6e3a}
+  .feedback.wrong{background:#fdf0f0;color:#a93226}
+  /* RESULTS */
+  .results-box{text-align:center;background:var(--teal-deep);color:#fff;border-radius:var(--radius);padding:36px;margin:20px 0}
+  .results-box .score{font-size:3.5rem;font-weight:900;color:var(--mint);font-family:'Trebuchet MS',serif}
+  .results-box .score-lbl{font-size:1rem;opacity:.8;margin-bottom:16px}
+  .results-box p{opacity:.85;font-size:.95rem}
+  /* ANNOTATED DOC */
+  .doc-wrap{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.08);position:relative;font-size:.9rem;line-height:1.7}
+  .doc-wrap p{margin-bottom:10px}
+  .ann{border-radius:4px;padding:1px 5px;cursor:pointer;font-weight:600;transition:opacity .2s}
+  .ann-1{background:#d4efdf;color:#1a6e3a}
+  .ann-2{background:#d6eaf8;color:#1a5276}
+  .ann-3{background:#fdebd0;color:#7d4800}
+  .ann-4{background:#f9d6d6;color:#a93226}
+  .ann-tooltip{display:none;position:absolute;left:50%;transform:translateX(-50%);background:var(--teal-deep);color:#fff;padding:10px 14px;border-radius:8px;font-size:.82rem;z-index:10;width:260px;text-align:center;top:auto;margin-top:4px;box-shadow:0 4px 12px rgba(0,0,0,.2);pointer-events:none}
+  .ann-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:.82rem}
+  .legend-dot{width:12px;height:12px;border-radius:50%}
+  /* ROLES */
+  .role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:20px 0}
+  .role-card{background:var(--teal-deep);border-radius:var(--radius);padding:16px;text-align:center;color:#fff}
+  .role-card .role-icon{font-size:1.8rem;margin-bottom:8px}
+  .role-card h4{font-size:.9rem;color:var(--mint);margin-bottom:4px}
+  .role-card p{font-size:.78rem;opacity:.8;line-height:1.4}
+  /* CHECKLIST */
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+  .check-item{display:flex;align-items:center;gap:10px;background:#fff;border-radius:8px;padding:12px;cursor:pointer;border:2px solid #cde;transition:border-color .2s,background .2s;font-size:.9rem;line-height:1.4}
+  .check-item.checked{border-color:var(--mint);background:#e8faf5}
+  .check-box{width:22px;height:22px;border-radius:5px;border:2px solid #aac;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:background .2s,border-color .2s}
+  .check-item.checked .check-box{background:var(--mint);border-color:var(--mint);color:#fff}
+  /* TOC */
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
+  .toc-btn{background:#fff;border:2px solid var(--seafoam);border-radius:var(--radius);padding:18px;cursor:pointer;text-align:left;transition:background .2s,border-color .2s;display:flex;align-items:center;gap:12px}
+  .toc-btn:hover{background:var(--seafoam);color:#fff}
+  .toc-btn:hover .toc-num,.toc-btn:hover .toc-label{color:#fff}
+  .toc-num{font-size:1.4rem;font-weight:900;color:var(--seafoam);font-family:'Trebuchet MS',serif;min-width:32px}
+  .toc-label{color:var(--teal-deep);font-family:'Trebuchet MS',serif;font-size:.95rem;font-weight:700}
+  /* FORMAT COMPARE */
+  .format-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  .format-box{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+  .format-box h4{color:var(--teal-deep);margin-bottom:10px;font-family:'Trebuchet MS',serif}
+  .format-box ul{padding-left:18px;font-size:.88rem;line-height:1.7;color:var(--gray)}
+  /* OBJECTIVES */
+  .obj-list{margin:20px 0}
+  .obj-item{display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+  .obj-badge{background:var(--teal-deep);color:#fff;border-radius:6px;padding:3px 10px;font-size:.75rem;font-family:'Trebuchet MS',serif;flex-shrink:0;margin-top:2px}
+  .obj-text{font-size:.93rem;color:#333;line-height:1.5}
+  /* QUOTE BOX */
+  .quote-box{background:var(--teal-deep);border-radius:var(--radius);padding:24px 28px;color:#fff;margin:20px 0;position:relative}
+  .quote-box::before{content:'"';font-size:5rem;color:var(--mint);position:absolute;top:-10px;left:12px;font-family:Georgia,serif;line-height:1;opacity:.4}
+  .quote-box p{font-style:italic;line-height:1.7;font-size:.95rem;padding-left:20px}
+  .quote-box .attr{text-align:right;font-size:.83rem;color:var(--mint);margin-top:10px;font-style:normal}
+  .reflect-box{background:#fff5e6;border-left:4px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;padding:14px 16px;margin-top:16px;font-size:.9rem;color:#7d4800}
+  .reflect-box strong{display:block;margin-bottom:4px;color:var(--gold)}
+  /* GUIDING QS */
+  .gq-list{margin:16px 0}
+  .gq-item{background:#fff;border-radius:8px;padding:12px 16px;margin-bottom:8px;cursor:pointer;border-left:4px solid #cde;transition:border-color .2s,background .2s;font-size:.92rem;line-height:1.5;display:flex;align-items:center;gap:10px}
+  .gq-item.visited{border-left-color:var(--mint);background:#e8faf5}
+  .gq-dot{width:12px;height:12px;border-radius:50%;background:#cde;flex-shrink:0;transition:background .2s}
+  .gq-item.visited .gq-dot{background:var(--mint)}
+  /* CLOSING */
+  .closing{text-align:center;background:linear-gradient(145deg,var(--teal-deep),var(--teal));border-radius:var(--radius);padding:48px 28px;color:#fff;min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .closing .big-check{font-size:4rem;margin-bottom:16px}
+  .closing h2{color:#fff;font-size:1.9rem;margin-bottom:12px}
+  .closing p{opacity:.85;max-width:500px;line-height:1.6;margin-bottom:20px}
+  /* SCREEN HEADER */
+  .screen-header{margin-bottom:24px}
+  .screen-header .section-tag{font-size:.78rem;color:var(--seafoam);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:6px}
+  .screen-header h2{color:var(--teal-deep);font-size:1.5rem;line-height:1.2}
+  .screen-header p{color:var(--gray);font-size:.95rem;margin-top:8px;line-height:1.5}
+  /* FUNCTIONAL EXAMPLES */
+  .func-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .func-tab{background:#fff;border:2px solid var(--seafoam);border-radius:24px;padding:7px 18px;cursor:pointer;font-size:.88rem;color:var(--teal-deep);font-family:'Trebuchet MS',serif;font-weight:700;transition:background .2s}
+  .func-tab.active{background:var(--seafoam);color:#fff}
+  .func-panel{display:none}
+  .func-panel.active{display:block}
+  /* PAGE DIVIDER */
+  .divider{border:none;border-top:2px solid #d0e8eb;margin:20px 0}
+  /* RESPONSIVE */
+  @media(max-width:600px){
+    .toc-grid,.checklist,.format-grid,.flip-grid{grid-template-columns:1fr}
+    .stat-row{flex-direction:column}
+    .screen{padding:20px 14px}
+    .title-screen h1{font-size:1.5rem}
+    .func-tabs{gap:6px}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<nav id="top-nav">
+  <span class="mod-title">See the Whole Student</span>
+  <span id="screen-counter">1 / 21</span>
+</nav>
+
+<div id="app">
+
+<!-- SCREEN 1: TITLE -->
+<div class="screen active" id="s1">
+  <div class="title-screen">
+    <div class="badge">Professional Development Module</div>
+    <h1>See the Whole Student:<br>Writing Powerful PLAAFP Statements</h1>
+    <p class="subtitle">A practical guide for special education teachers and case managers who want their IEPs to truly reflect the students they serve.</p>
+    <button class="start-btn" onclick="goTo(2)">Get Started →</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: TABLE OF CONTENTS -->
+<div class="screen" id="s2">
+  <div class="screen-header">
+    <div class="section-tag">Navigation</div>
+    <h2>What's in This Module?</h2>
+    <p>You can work through this module in order or jump to any section. Select a section to begin there.</p>
+  </div>
+  <div class="toc-grid">
+    <button class="toc-btn" onclick="goTo(4)"><span class="toc-num">01</span><span class="toc-label">Why PLAAFP Matters</span></button>
+    <button class="toc-btn" onclick="goTo(7)"><span class="toc-num">02</span><span class="toc-label">The 4 Required Elements</span></button>
+    <button class="toc-btn" onclick="goTo(10)"><span class="toc-num">03</span><span class="toc-label">Common Pitfalls</span></button>
+    <button class="toc-btn" onclick="goTo(12)"><span class="toc-num">04</span><span class="toc-label">Writing in Practice</span></button>
+    <button class="toc-btn" onclick="goTo(15)"><span class="toc-num">05</span><span class="toc-label">Knowledge Check</span></button>
+    <button class="toc-btn" onclick="goTo(3)" style="border-color:var(--gold)"><span class="toc-num" style="color:var(--gold)">★</span><span class="toc-label">Learning Objectives</span></button>
+  </div>
+  <p style="font-size:.83rem;color:var(--gray);text-align:center;margin-top:8px">Estimated time: 30–45 minutes</p>
+</div>
+
+<!-- SCREEN 3: OBJECTIVES -->
+<div class="screen" id="s3">
+  <div class="screen-header">
+    <div class="section-tag">Overview</div>
+    <h2>Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+  </div>
+  <div class="obj-list">
+    <div class="obj-item"><span class="obj-badge">Remember</span><span class="obj-text">Identify the four required elements of a PLAAFP statement as defined by IDEA.</span></div>
+    <div class="obj-item"><span class="obj-badge">Understand</span><span class="obj-text">Explain the legal and instructional significance of a well-written PLAAFP statement and how it anchors the entire IEP.</span></div>
+    <div class="obj-item"><span class="obj-badge">Analyze</span><span class="obj-text">Distinguish between weak and strong PLAAFP statements using the Marcus example and a quality self-check rubric.</span></div>
+    <div class="obj-item"><span class="obj-badge">Create</span><span class="obj-text">Apply the four required elements and guiding questions to write or revise a PLAAFP statement that reflects the whole student.</span></div>
+  </div>
+</div>
+
+<!-- SCREEN 4: SECTION 01 INTRO -->
+<div class="screen" id="s4">
+  <div class="section-intro">
+    <div class="sec-num">01</div>
+    <h2>Why PLAAFP Matters</h2>
+    <p>Before we can write meaningful goals, we need to truly understand where a student is right now — academically, functionally, and as a whole person.</p>
+  </div>
+  <div style="margin-top:20px;border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.15);aspect-ratio:16/9;width:100%">
+    <iframe width="100%" height="100%" src="https://app.heygen.com/embeds/5289d7d60f3b4775b161bc253848a178" title="HeyGen video player" frameborder="0" allow="encrypted-media; fullscreen;" allowfullscreen style="display:block"></iframe>
+  </div>
+</div>
+
+<!-- SCREEN 5: WHAT IS A PLAAFP -->
+<div class="screen" id="s5">
+  <div class="screen-header">
+    <div class="section-tag">Section 01 · Why PLAAFP Matters</div>
+    <h2>What Is a PLAAFP Statement?</h2>
+    <p>The <strong>Present Levels of Academic Achievement and Functional Performance</strong> (PLAAFP) statement summarizes where a student is right now. It is the foundation of every IEP — without it, nothing else holds.</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="num">13%</div><div class="lbl">of all public school students have disabilities affecting learning</div></div>
+    <div class="stat-box"><div class="num">6.8M</div><div class="lbl">students currently qualify for special education services</div></div>
+    <div class="stat-box"><div class="num">92%</div><div class="lbl">spend at least part of the day in general education classrooms</div></div>
+  </div>
+  <div class="card"><h4>More Than a Score Summary</h4><p>A strong PLAAFP is not a list of test scores. It tells the story of a student — what they can do, what challenges them, and what they need to move forward. Think of Marcus, a 4th grader who reads at a 2nd grade level but demonstrates remarkable verbal reasoning. His PLAAFP should capture both.</p></div>
+</div>
+
+<!-- SCREEN 6: LEGAL FOUNDATION -->
+<div class="screen" id="s6">
+  <div class="screen-header">
+    <div class="section-tag">Section 01 · Why PLAAFP Matters</div>
+    <h2>The Legal Foundation</h2>
+    <p>The PLAAFP requirement is not just best practice — it is the law. Courts have been clear about what happens when it's missing.</p>
+  </div>
+  <div class="quote-box">
+    <p>If the IEP fails to assess the child's present levels of academic achievement and functional performance, the IEP does not comply with IDEA. This deficiency goes to the heart of the IEP; the child's level of academic achievement and functional performance is the foundation on which the IEP must be built. Without a clear identification of present levels, the IEP cannot set measurable goals, evaluate the child's progress, or determine which educational and related services are needed.</p>
+    <div class="attr">— Kirby v. Cabell County Board of Education, 2006</div>
+  </div>
+  <div class="reflect-box"><strong>💭 Pause & Reflect</strong>Think about your most recent PLAAFP statements. Would a reviewer who doesn't know the student be able to understand their strengths, challenges, and what they need — just from reading it?</div>
+</div>
+
+<!-- SCREEN 7: SECTION 02 INTRO -->
+<div class="screen" id="s7">
+  <div class="section-intro">
+    <div class="sec-num">02</div>
+    <h2>The 4 Required Elements</h2>
+    <p>IDEA identifies four key components every PLAAFP statement must address. These aren't boxes to check — they're a framework for seeing the whole student.</p>
+  </div>
+</div>
+
+<!-- SCREEN 8: 4 ELEMENTS FLIP CARDS -->
+<div class="screen" id="s8">
+  <div class="screen-header">
+    <div class="section-tag">Section 02 · The 4 Required Elements</div>
+    <h2>Four Elements of a PLAAFP</h2>
+  </div>
+  <p class="tap-hint">👆 Click each card to reveal the description</p>
+  <div class="flip-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="icon">📋</div><h4>Element 1<br>Student Needs</h4></div>
+        <div class="flip-back"><strong>Describe the student's needs</strong>Identifies specific academic and/or functional skill areas where the student requires support — grounded in evaluation data, not assumptions.</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="icon">🎓</div><h4>Element 2<br>Impact Statement</h4></div>
+        <div class="flip-back"><strong>Effect on general education</strong>States clearly how the student's disability affects involvement and progress in the general education curriculum. Required by law.</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="icon">📊</div><h4>Element 3<br>Baseline Data</h4></div>
+        <div class="flip-back"><strong>Current performance levels</strong>Documents measurable, observable current performance that serves as a baseline to track future progress — not vague descriptors.</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="icon">🎯</div><h4>Element 4<br>Connection to Goals</h4></div>
+        <div class="flip-back"><strong>Informs goals and services</strong>The PLAAFP must directly inform the student's annual goals and the services/supports the team will provide. If it doesn't connect, revise it.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card"><h4>Marcus in Practice</h4><p>For Marcus, Element 1 describes his decoding challenges. Element 2 explains how those challenges affect his ability to access grade-level texts. Element 3 provides his ORF score of 58 wcpm. Element 4 connects directly to his reading fluency goal and small-group intervention services.</p></div>
+</div>
+
+<!-- SCREEN 9: ELEMENT 3 DEEP DIVE -->
+<div class="screen" id="s9">
+  <div class="screen-header">
+    <div class="section-tag">Section 02 · The 4 Required Elements</div>
+    <h2>Element 3 Deep Dive: Baseline Data</h2>
+    <p>Baseline data is the most commonly underdeveloped element. Compare these examples to see the difference meaningful data makes.</p>
+  </div>
+  <table class="compare-table">
+    <tr><th>⚠ Weak Baseline</th><th>✅ Strong Baseline</th></tr>
+    <tr><td>"Marcus has difficulty reading."</td><td>"Marcus reads 58 words correct per minute on 2nd grade passages (Aimsweb, Sept. 2024), compared to a benchmark of 90 wcpm."</td></tr>
+    <tr><td>"Marcus struggles with math."</td><td>"Marcus scores 62% on multi-step word problems involving addition and subtraction (district CFA, Oct. 2024). He solves single-step problems with 85% accuracy."</td></tr>
+    <tr><td>"Marcus has behavior challenges in class."</td><td>"Marcus engages in off-task behavior an average of 4 times per 30-minute class period (direct observation, Oct. 2024), most frequently during independent work."</td></tr>
+    <tr><td>"Marcus's writing needs work."</td><td>"Marcus produces an average of 12 correct writing sequences per 3-minute probe (AIMS, Sept. 2024), compared to a peer median of 24."</td></tr>
+  </table>
+  <div class="reflect-box"><strong>Key Takeaway</strong>Strong baseline data answers: What was measured? What were the results? When? Compared to what standard or benchmark?</div>
+</div>
+
+<!-- SCREEN 10: SECTION 03 INTRO -->
+<div class="screen" id="s10">
+  <div class="section-intro">
+    <div class="sec-num">03</div>
+    <h2>Common Pitfalls</h2>
+    <p>Even experienced case managers fall into predictable PLAAFP traps. Knowing them is the first step to avoiding them.</p>
+  </div>
+</div>
+
+<!-- SCREEN 11: PITFALL CARDS -->
+<div class="screen" id="s11">
+  <div class="screen-header">
+    <div class="section-tag">Section 03 · Common Pitfalls</div>
+    <h2>Four Pitfalls — and How to Fix Them</h2>
+    <p class="tap-hint">👆 Click each card to reveal the fix</p>
+  </div>
+  <div class="pitfall-grid">
+    <div class="pitfall-card" onclick="this.classList.toggle('revealed')">
+      <div class="pitfall-title">🚫 Pitfall 1: The Disability Label as Description</div>
+      <div class="pitfall-desc">"Marcus has dyslexia, which causes reading difficulties." The label replaces actual description of the student's current performance.</div>
+      <div class="pitfall-fix"><strong>✅ The Fix:</strong>Describe what the student actually does and doesn't do — not what their diagnosis says they should do. Use data and observation, not category language.</div>
+    </div>
+    <div class="pitfall-card" onclick="this.classList.toggle('revealed')">
+      <div class="pitfall-title">🚫 Pitfall 2: Only Deficits, No Strengths</div>
+      <div class="pitfall-desc">A PLAAFP that reads like a list of everything the student can't do. It feels deficit-focused and doesn't give the team anything to build on.</div>
+      <div class="pitfall-fix"><strong>✅ The Fix:</strong>Intentionally lead with or weave in documented strengths. For Marcus: "demonstrates strong verbal comprehension and can retell stories accurately when read aloud."</div>
+    </div>
+    <div class="pitfall-card" onclick="this.classList.toggle('revealed')">
+      <div class="pitfall-title">🚫 Pitfall 3: Vague or Stale Data</div>
+      <div class="pitfall-desc">"Based on last year's evaluation…" or "According to teacher reports, Marcus sometimes struggles." Vague language and outdated data don't support goal-setting.</div>
+      <div class="pitfall-fix"><strong>✅ The Fix:</strong>Cite specific tools, scores, dates, and observers. If data is more than a year old, note it and supplement with recent classroom data or informal assessments.</div>
+    </div>
+    <div class="pitfall-card" onclick="this.classList.toggle('revealed')">
+      <div class="pitfall-title">🚫 Pitfall 4: No Connection to Goals</div>
+      <div class="pitfall-desc">The PLAAFP and the annual goals feel like they came from two different documents. A reader can't trace how one led to the other.</div>
+      <div class="pitfall-fix"><strong>✅ The Fix:</strong>After drafting each PLAAFP element, ask: "Which goal does this connect to?" If you can't answer, either the PLAAFP needs more specificity or a goal is missing.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 12: SECTION 04 INTRO -->
+<div class="screen" id="s12">
+  <div class="section-intro">
+    <div class="sec-num">04</div>
+    <h2>Writing in Practice</h2>
+    <p>Theory is helpful. Seeing it in action is transformative. Let's walk through Marcus's PLAAFP from weak to strong — and explore the team questions that drive quality writing.</p>
+  </div>
+</div>
+
+<!-- SCREEN 13: BEFORE/AFTER MARCUS -->
+<div class="screen" id="s13">
+  <div class="screen-header">
+    <div class="section-tag">Section 04 · Writing in Practice</div>
+    <h2>Marcus: Before & After</h2>
+    <p>Marcus is a 9-year-old 4th grader with a specific learning disability in reading. Compare these two versions of his PLAAFP reading section.</p>
+  </div>
+  <table class="compare-table">
+    <tr><th>⚠ Before: Weak PLAAFP</th><th>✅ After: Strong PLAAFP</th></tr>
+    <tr>
+      <td>"Marcus has a reading disability and struggles with grade-level texts. He needs support in this area."</td>
+      <td>"Marcus demonstrates relative strength in verbal comprehension; when texts are read aloud, he can summarize main ideas and make inferences with 80% accuracy (teacher observation, Oct. 2024)."</td>
+    </tr>
+    <tr>
+      <td>(No impact statement)</td>
+      <td>"Marcus's decoding difficulties prevent him from independently accessing 4th grade texts, affecting his ability to complete reading assignments, participate in content-area learning, and demonstrate his knowledge in written formats."</td>
+    </tr>
+    <tr>
+      <td>"His reading scores are below grade level."</td>
+      <td>"On the DIBELS 8th Edition Oral Reading Fluency probe (Sept. 2024), Marcus read 58 words per minute on 2nd grade passages. The 4th grade benchmark is 115 words per minute."</td>
+    </tr>
+    <tr>
+      <td>(No connection to goals)</td>
+      <td>"This baseline will be used to measure progress toward Marcus's annual reading fluency goal and will inform placement in Tier 2 small-group reading intervention."</td>
+    </tr>
+  </table>
+</div>
+
+<!-- SCREEN 14: GUIDING QUESTIONS -->
+<div class="screen" id="s14">
+  <div class="screen-header">
+    <div class="section-tag">Section 04 · Writing in Practice</div>
+    <h2>IEP Team Guiding Questions</h2>
+    <p>Use these questions to drive your team's PLAAFP conversation. Click each to mark it as discussed.</p>
+  </div>
+  <div class="gq-list" id="gq-list">
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>What can this student do well — academically, functionally, and socially?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>What specific skills or behaviors are areas of need, and what data supports this?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>How does the student's disability affect their access to and progress in the general education curriculum?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>What does current assessment data tell us? Is it recent enough to be meaningful?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>What is the student's starting point — what baseline will we measure progress against?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>What accommodations or supports are already working for this student?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>What does the parent/guardian observe at home that connects to school performance?</div>
+    <div class="gq-item" onclick="this.classList.toggle('visited')"><div class="gq-dot"></div>For students old enough: What does the student say about how they learn best?</div>
+  </div>
+  <p style="font-size:.82rem;color:var(--gray);margin-top:8px">💡 These questions help ensure your PLAAFP captures the whole student — not just the disability.</p>
+</div>
+
+<!-- SCREEN 15: KNOWLEDGE CHECK -->
+<div class="screen" id="s15">
+  <div class="screen-header">
+    <div class="section-tag">Section 05 · Knowledge Check</div>
+    <h2>Let's Check Your Understanding</h2>
+    <p>Three questions. Answer each, then see your results.</p>
+  </div>
+  <div id="quiz-container">
+    <div class="quiz-q" id="qq1">
+      <h4>Question 1: According to <em>Kirby v. Cabell</em>, what is the primary consequence of a missing or inadequate PLAAFP?</h4>
+      <button class="quiz-opt" data-q="1" data-opt="A" onclick="checkQ(this)">A) The IEP must be rewritten from scratch by the district</button>
+      <button class="quiz-opt" data-q="1" data-opt="B" onclick="checkQ(this)">B) The IEP cannot set measurable goals, evaluate progress, or determine appropriate services</button>
+      <button class="quiz-opt" data-q="1" data-opt="C" onclick="checkQ(this)">C) The student loses eligibility for special education services</button>
+      <button class="quiz-opt" data-q="1" data-opt="D" onclick="checkQ(this)">D) The case manager must attend additional training</button>
+      <div id="fb1" class="feedback" style="display:none"></div>
+    </div>
+    <div class="quiz-q" id="qq2">
+      <h4>Question 2: Which of the following is the strongest example of baseline data for a PLAAFP?</h4>
+      <button class="quiz-opt" data-q="2" data-opt="A" onclick="checkQ(this)">A) "Marcus struggles with reading fluency in class."</button>
+      <button class="quiz-opt" data-q="2" data-opt="B" onclick="checkQ(this)">B) "Marcus reads below grade level according to his teacher."</button>
+      <button class="quiz-opt" data-q="2" data-opt="C" onclick="checkQ(this)">C) "Marcus read 58 words per minute on a 2nd grade DIBELS 8th Edition ORF probe (Sept. 2024); the 4th grade benchmark is 115 words per minute."</button>
+      <button class="quiz-opt" data-q="2" data-opt="D" onclick="checkQ(this)">D) "Based on last year's evaluation, Marcus has reading difficulties consistent with dyslexia."</button>
+      <div id="fb2" class="feedback" style="display:none"></div>
+    </div>
+    <div class="quiz-q" id="qq3">
+      <h4>Question 3: Which PLAAFP pitfall is demonstrated here: "Marcus has dyslexia, which causes difficulty reading grade-level texts."?</h4>
+      <button class="quiz-opt" data-q="3" data-opt="A" onclick="checkQ(this)">A) Using the disability label as a substitute for describing actual performance</button>
+      <button class="quiz-opt" data-q="3" data-opt="B" onclick="checkQ(this)">B) Failing to include baseline data</button>
+      <button class="quiz-opt" data-q="3" data-opt="C" onclick="checkQ(this)">C) Focusing only on deficits</button>
+      <button class="quiz-opt" data-q="3" data-opt="D" onclick="checkQ(this)">D) Missing a connection to annual goals</button>
+      <div id="fb3" class="feedback" style="display:none"></div>
+    </div>
+    <button id="quiz-submit-btn" class="nav-btn gold" onclick="showQuizResults()" style="margin-top:8px;display:none">See My Results →</button>
+  </div>
+  <div id="quiz-results" style="display:none">
+    <div class="results-box">
+      <div class="score" id="score-display"></div>
+      <div class="score-lbl">out of 3 correct</div>
+      <p id="score-message"></p>
+    </div>
+    <button class="nav-btn" onclick="resetQuiz()" style="margin-top:12px">↩ Retake Quiz</button>
+  </div>
+</div>
+
+<!-- SCREEN 16: ANNOTATED SAMPLE -->
+<div class="screen" id="s16">
+  <div class="screen-header">
+    <div class="section-tag">Reference</div>
+    <h2>Annotated PLAAFP Sample: Marcus</h2>
+    <p>Each highlighted phrase corresponds to one of the four required elements. Click a highlight to see the label.</p>
+  </div>
+  <div class="doc-wrap" id="ann-doc">
+    <p><span class="ann ann-1" onclick="showAnn(1,this)">Marcus demonstrates relative strength in verbal comprehension; when texts are read aloud, he summarizes main ideas and makes inferences with approximately 80% accuracy (teacher observation, Oct. 2024).</span></p>
+    <p><span class="ann ann-2" onclick="showAnn(2,this)">Marcus's decoding difficulties prevent him from independently accessing 4th grade texts, affecting his participation in content-area learning and his ability to demonstrate knowledge in written formats.</span></p>
+    <p><span class="ann ann-3" onclick="showAnn(3,this)">On the AimsWeb Oral Reading Fluency probe administered in September 2024, Marcus read 58 words correct per minute on 2nd grade passages. The 4th grade grade-level benchmark is 115 wcpm.</span></p>
+    <p><span class="ann ann-4" onclick="showAnn(4,this)">This baseline data will be used to measure progress toward Marcus's annual reading fluency goal and will inform his placement in a Tier 2 small-group reading intervention meeting three times per week.</span></p>
+    <div id="ann-tooltip" class="ann-tooltip"></div>
+  </div>
+  <div class="ann-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Element 1: Student Needs / Strengths</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2980b9"></div>Element 2: Impact on General Ed</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Element 3: Baseline Data</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Element 4: Connection to Goals</div>
+  </div>
+</div>
+
+<!-- SCREEN 17: WHO CONTRIBUTES MATCHING -->
+<div class="screen" id="s17">
+  <div class="screen-header">
+    <div class="section-tag">Reference</div>
+    <h2>Who Contributes to the PLAAFP?</h2>
+    <p>Match each team member on the left to what they contribute on the right. Click a role, then click its match.</p>
+  </div>
+  <div id="match-game">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+      <div id="roles-col">
+        <p style="font-size:.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:700">Team Member</p>
+        <div class="match-item" data-type="role" data-id="1">👩‍🏫 General Ed Teacher</div>
+        <div class="match-item" data-type="role" data-id="2">🎓 Special Educator</div>
+        <div class="match-item" data-type="role" data-id="3">👪 Parent / Guardian</div>
+        <div class="match-item" data-type="role" data-id="4">🧑‍⚕️ Related Service Provider</div>
+        <div class="match-item" data-type="role" data-id="5">🙋 The Student</div>
+      </div>
+      <div id="contribs-col">
+        <p style="font-size:.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:700">Their Contribution</p>
+        <div class="match-item" data-type="contrib" data-id="2">Evaluation data, progress monitoring results, and skill-specific assessment findings</div>
+        <div class="match-item" data-type="contrib" data-id="5">Self-assessment, learning preferences, interests, and personal strengths and challenges</div>
+        <div class="match-item" data-type="contrib" data-id="3">Home behaviors, daily living skills, strengths outside school, and the family's vision</div>
+        <div class="match-item" data-type="contrib" data-id="1">Classroom performance, participation, behavior patterns, and peer comparisons</div>
+        <div class="match-item" data-type="contrib" data-id="4">Observations from speech-language, OT, PT, or counseling in functional contexts</div>
+      </div>
+    </div>
+    <div id="match-feedback" style="margin-top:14px;font-size:.9rem;min-height:28px"></div>
+    <button class="nav-btn" style="margin-top:10px;display:none" id="match-reset-btn">↩ Try Again</button>
+  </div>
+  <style>
+    .match-item{background:#fff;border:2px solid #cde;border-radius:8px;padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:.88rem;line-height:1.4;transition:border-color .2s,background .2s}
+    .match-item:hover{border-color:var(--seafoam);background:#f0fafa}
+    .match-item.selected{border-color:var(--gold);background:#fff8e6}
+    .match-item.matched-correct{border-color:#27ae60 !important;background:#e8f8f0 !important;color:#1a6e3a;cursor:default;font-weight:700;pointer-events:none}
+    .match-item.matched-wrong{border-color:#e74c3c !important;background:#fdf0f0 !important;animation:shake .35s}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  </style>
+</div>
+
+<!-- SCREEN 18: FUNCTIONAL PERFORMANCE EXAMPLES -->
+<div class="screen" id="s18">
+  <div class="screen-header">
+    <div class="section-tag">Reference</div>
+    <h2>Functional Performance Examples</h2>
+    <p>PLAAFP statements address more than academics. Explore examples across three functional domains — click a tab to explore.</p>
+  </div>
+  <div class="func-tabs">
+    <button class="func-tab active" onclick="switchTab('se',this)">Social / Emotional</button>
+    <button class="func-tab" onclick="switchTab('beh',this)">Behavioral</button>
+    <button class="func-tab" onclick="switchTab('mot',this)">Motor / Adaptive</button>
+  </div>
+  <div class="func-panel active" id="fp-se">
+    <div class="card"><h4>Weak Example</h4><p>"Marcus has trouble making friends and sometimes gets upset."</p></div>
+    <div class="card" style="border-left-color:var(--mint)"><h4>Strong Example</h4><p>"Marcus initiates peer interactions in unstructured settings (lunch, recess) an average of 1–2 times per day. When peer interactions do not go as expected, Marcus has exited the situation without adult support on 6 of 10 observed occasions (Oct. 2024). He has identified two trusted adults he can go to when overwhelmed."</p></div>
+  </div>
+  <div class="func-panel" id="fp-beh">
+    <div class="card"><h4>Weak Example</h4><p>"Marcus has behavior issues that affect his learning."</p></div>
+    <div class="card" style="border-left-color:var(--mint)"><h4>Strong Example</h4><p>"During independent work periods, Marcus engages in off-task behaviors (pencil tapping, looking around) an average of 4 times per 30-minute period, with each episode lasting approximately 2–3 minutes (direct observation, Oct. 2024). Off-task behavior occurs least frequently during small-group activities."</p></div>
+  </div>
+  <div class="func-panel" id="fp-mot">
+    <div class="card"><h4>Weak Example</h4><p>"Marcus has fine motor difficulties."</p></div>
+    <div class="card" style="border-left-color:var(--mint)"><h4>Strong Example</h4><p>"Marcus produces legible handwriting at a rate of approximately 8 letters per minute on copying tasks (OT assessment, Sept. 2024). The grade-level expectation is 15+ letters per minute. He demonstrates pencil grip adjustments when fatigued, which affects sustained written output in longer tasks."</p></div>
+  </div>
+</div>
+
+<!-- SCREEN 19: SELF-CHECK CHECKLIST -->
+<div class="screen" id="s19">
+  <div class="screen-header">
+    <div class="section-tag">Tool</div>
+    <h2>PLAAFP Quality Self-Check</h2>
+    <p>Use this checklist when reviewing or writing a PLAAFP. Click each item to mark it complete. A strong PLAAFP should earn all eight checkmarks.</p>
+  </div>
+  <div class="checklist">
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>The statement describes the student's specific areas of need — not just the disability label.</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>Documented strengths are included and reflect the whole student.</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>The impact on general education participation is explicitly stated.</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>All data is current (ideally within the past year).</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>Baseline data includes specific scores, tools used, dates, and benchmarks for comparison.</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>The PLAAFP directly informs at least one annual goal.</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>A reader who doesn't know the student can understand their profile from this statement alone.</span></div>
+    <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box">✓</div><span>Input from more than one team member (including the parent) is reflected.</span></div>
+  </div>
+  <p style="font-size:.82rem;color:var(--gray)">💡 Use this tool at IEP team meetings, peer reviews, or when onboarding new case managers.</p>
+</div>
+
+<!-- SCREEN 20: DISTRICT VARIATION -->
+<div class="screen" id="s20">
+  <div class="screen-header">
+    <div class="section-tag">Context</div>
+    <h2>District & State Format Variation</h2>
+    <p>While the four required elements are consistent nationwide, how they're documented varies. Here are two common formats.</p>
+  </div>
+  <div class="format-grid">
+    <div class="format-box">
+      <h4>📄 Format A: Unified Narrative</h4>
+      <ul>
+        <li>One comprehensive statement covering all areas of need</li>
+        <li>Strengths and challenges woven together</li>
+        <li>All four elements integrated into flowing prose</li>
+        <li>Common in states with flexible IEP formats</li>
+        <li><strong>Best for:</strong> Experienced writers who can weave all elements naturally</li>
+      </ul>
+    </div>
+    <div class="format-box">
+      <h4>📋 Format B: Area-by-Area Sections</h4>
+      <ul>
+        <li>Separate PLAAFP entry for each area of need (e.g., Reading, Math, Behavior)</li>
+        <li>Each section addresses all four elements for that domain</li>
+        <li>Easier to audit for compliance</li>
+        <li>Common in states with structured IEP templates</li>
+        <li><strong>Best for:</strong> Teams new to PLAAFP writing or complex multi-domain students</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card"><h4>What Stays Consistent</h4><p>Regardless of format, all four required elements must be present for every identified area of need. Format affects organization — not what must be included. When in doubt, check your state's IEP guidance documents or consult your district's special education coordinator.</p></div>
+</div>
+
+<!-- SCREEN 21: CLOSING -->
+<div class="screen" id="s21">
+  <div class="closing">
+    <div class="big-check">🏆</div>
+    <h2>Module Complete!</h2>
+    <p>You've finished <em>See the Whole Student: Writing Powerful PLAAFP Statements</em>. You now have the knowledge and tools to write PLAAFP statements that genuinely reflect the students you serve — and anchor IEPs that make a real difference.</p>
+    <p style="margin-top:0;font-size:.9rem;opacity:.75">Remember: a powerful PLAAFP isn't about compliance. It's about seeing Marcus — and every student like him — as a whole person with real strengths, real challenges, and real potential.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px">
+      <button class="start-btn" onclick="goTo(2)">↩ Back to Menu</button>
+      <button class="start-btn" style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4)" onclick="goTo(19)">📋 Quality Self-Check</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<nav id="bottom-nav">
+  <button class="nav-btn" id="prev-btn" onclick="prevScreen()">← Previous</button>
+  <button class="nav-btn gold" id="next-btn" onclick="nextScreen()">Next →</button>
+</nav>
+
+<script>
+const TOTAL = 21;
+let current = 1;
+let quizAnswers = {};
+let quizCorrect = {1:'b',2:'c',3:'a'};
+
+function goTo(n){
+  document.getElementById('s'+current).classList.remove('active');
+  current = n;
+  document.getElementById('s'+current).classList.add('active');
+  updateNav();
+
+let matchSelected = {role: null, contrib: null};
+let matchedPairs = 0;
+
+document.getElementById('match-game').addEventListener('click', function(e){
+  const el = e.target.closest('.match-item');
+  if(!el || el.classList.contains('matched-correct')) return;
+  const type = el.dataset.type;
+  // deselect previous of same type
+  document.querySelectorAll('.match-item[data-type="'+type+'"].selected').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  matchSelected[type] = el;
+  if(matchSelected.role && matchSelected.contrib){
+    const rId = matchSelected.role.dataset.id;
+    const cId = matchSelected.contrib.dataset.id;
+    const fb = document.getElementById('match-feedback');
+    const r = matchSelected.role, c = matchSelected.contrib;
+    matchSelected = {role:null, contrib:null};
+    if(rId === cId){
+      r.classList.remove('selected'); c.classList.remove('selected');
+      r.classList.add('matched-correct'); c.classList.add('matched-correct');
+      matchedPairs++;
+      fb.innerHTML = matchedPairs===5
+        ? '<span style="color:#27ae60;font-weight:700">🎉 Perfect! All five matched correctly.</span>'
+        : '<span style="color:#27ae60">✅ Correct match! Keep going.</span>';
+      if(matchedPairs===5) document.getElementById('match-reset-btn').style.display='inline-block';
+    } else {
+      r.classList.add('matched-wrong'); c.classList.add('matched-wrong');
+      fb.innerHTML = '<span style="color:#e74c3c">❌ Not quite — try again!</span>';
+      setTimeout(()=>{
+        r.classList.remove('matched-wrong','selected');
+        c.classList.remove('matched-wrong','selected');
+      }, 600);
+    }
+  }
+});
+
+document.getElementById('match-reset-btn').addEventListener('click', function(){
+  matchSelected = {role:null, contrib:null};
+  matchedPairs = 0;
+  document.querySelectorAll('.match-item').forEach(el=>el.classList.remove('matched-correct','matched-wrong','selected'));
+  document.getElementById('match-feedback').innerHTML='';
+  document.getElementById('match-reset-btn').style.display='none';
+});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextScreen(){if(current<TOTAL)goTo(current+1)}
+function prevScreen(){if(current>1)goTo(current-1)}
+function updateNav(){
+  document.getElementById('prev-btn').disabled = current===1;
+  document.getElementById('next-btn').disabled = current===TOTAL;
+  document.getElementById('screen-counter').textContent = current+' / '+TOTAL;
+  const pct = ((current-1)/(TOTAL-1))*100;
+  document.getElementById('progress-bar').style.width = pct+'%';
+}
+
+const CORRECT = {'1':'B','2':'C','3':'A'};
+function checkQ(btn){
+  const q = btn.dataset.q;
+  const opt = btn.dataset.opt;
+  const isCorrect = opt === CORRECT[q];
+  const fb = document.getElementById('fb'+q);
+  if(isCorrect){
+    btn.classList.add('correct');
+    btn.disabled = true;
+    // disable all other buttons for this question
+    btn.parentElement.querySelectorAll('.quiz-opt').forEach(b=>{b.disabled=true;});
+    fb.style.display='block';
+    fb.className='feedback correct';
+    fb.textContent='✅ Correct! Well done.';
+    quizAnswers[q]=true;
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled=true;
+    fb.style.display='block';
+    fb.className='feedback wrong';
+    fb.textContent='❌ Incorrect — try again!';
+  }
+  if(Object.keys(quizAnswers).length===3){
+    document.getElementById('quiz-submit-btn').style.display='inline-block';
+  }
+}
+function showQuizResults(){
+  const score = Object.values(quizAnswers).filter(Boolean).length;
+  document.getElementById('quiz-container').style.display='none';
+  document.getElementById('quiz-results').style.display='block';
+  document.getElementById('score-display').textContent = score+'/3';
+  const msgs = ['Keep reviewing — go back and explore the sections again.','Good effort! Review the sections on legal foundations and baseline data.','Great work! You have a strong grasp of PLAAFP essentials.'];
+  document.getElementById('score-message').textContent = msgs[score];
+}
+function resetQuiz(){
+  quizAnswers={};
+  document.getElementById('quiz-results').style.display='none';
+  document.getElementById('quiz-container').style.display='block';
+  document.getElementById('quiz-submit-btn').style.display='none';
+  document.querySelectorAll('.quiz-opt').forEach(b=>{b.disabled=false;b.className='quiz-opt'});
+  document.querySelectorAll('.feedback').forEach(f=>f.style.display='none');
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.func-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.func-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fp-'+id).classList.add('active');
+}
+
+const annLabels={
+  1:'Element 1 — Student Needs & Strengths: Describes what Marcus can do, grounded in observation data.',
+  2:'Element 2 — Impact on General Education: States specifically how the disability affects his access to curriculum.',
+  3:'Element 3 — Baseline Data: Specific score, tool, date, and grade-level benchmark for comparison.',
+  4:'Element 4 — Connection to Goals & Services: Explicitly links the data to a goal and a service delivery plan.'
+};
+function showAnn(n,el){
+  const tip=document.getElementById('ann-tooltip');
+  tip.textContent=annLabels[n];
+  tip.style.display='block';
+  const rect=el.getBoundingClientRect();
+  const docRect=document.getElementById('ann-doc').getBoundingClientRect();
+  tip.style.top=(rect.bottom-docRect.top+6)+'px';
+  tip.style.left='50%';
+  setTimeout(()=>{tip.style.display='none'},3500);
+}
+
+updateNav();
+</script>
+</body>
+</html>
